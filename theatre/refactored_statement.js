@@ -4,6 +4,10 @@ function statement(invoice, plays) {
         result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
     }
 
+    result += `Amount owed is ${usd(totalAmount())}\n`;
+    result += `You earned ${totalVolumeCredits()} credits\n`;
+    return result;
+
     function totalVolumeCredits()
     {
         let volumeCredits = 0;
@@ -67,10 +71,6 @@ function statement(invoice, plays) {
         if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
         return result;
     }
-
-    result += `Amount owed is ${usd(totalAmount())}\n`;
-    result += `You earned ${totalVolumeCredits()} credits\n`;
-    return result;
 }
 
 
