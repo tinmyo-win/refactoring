@@ -9,52 +9,12 @@ function statement(invoice, plays)
     {
         const result = Object.assign({}, aPerformance);
         result.play = playFor(result);
+        result.amount = amountFor(result);
         return result;
     }
 
     function playFor(aPerformance) {
         return plays[aPerformance.playID];
-    }
-}
-
-function renderPlainText(data) {
-    let result = `Statement for ${data.customer}\n`;
-    for (let perf of data.performances) {
-        result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
-    }
-
-    result += `Amount owed is ${usd(totalAmount())}\n`;
-    result += `You earned ${totalVolumeCredits()} credits\n`;
-    return result;
-
-    function totalVolumeCredits()
-    {
-        let volumeCredits = 0;
-        for (let perf of data.performances) {
-            // add volume credits
-            volumeCredits += volumeCreditsFor(perf);
-        }
-
-        return volumeCredits;
-    }
-
-    function totalAmount()
-    {
-        let result = 0;
-        for (let perf of data.performances) {
-            // add volume credits
-            result += amountFor(perf);
-        }
-
-        return result;
-    }
-
-    function usd(aNumber) {
-        return new Intl.NumberFormat("en-US",
-        {
-            style: "currency", currency: "USD",
-            minimumFractionDigits: 2
-        }).format(aNumber / 100);
     }
 
     function amountFor(aPerformance) {
@@ -78,6 +38,48 @@ function renderPlainText(data) {
                 throw new Error(`unknown type: ${aPerformance.play.type}`);
         }
         return result;
+    }
+
+}
+
+function renderPlainText(data) {
+    let result = `Statement for ${data.customer}\n`;
+    for (let perf of data.performances) {
+        result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
+    }
+
+    result += `Amount owed is ${usd(totalAmount())}\n`;
+    result += `You earned ${totalVolumeCredits()} credits\n`;
+    return result;
+
+    function totalVolumeCredits()
+    {
+        let volumeCredits = 0;
+        for (let perf of data.performances) {
+            // add volume credits
+            volumeCredits += volumeCreditsFor(perf);
+        }
+
+        return volumeCredits;
+    }
+
+    function totalAmount()
+    {
+        let result = 0;
+        for (let perf of data.performances) {
+            // add volume credits
+            result += perf.amount;
+        }
+
+        return result;
+    }
+
+    function usd(aNumber) {
+        return new Intl.NumberFormat("en-US",
+        {
+            style: "currency", currency: "USD",
+            minimumFractionDigits: 2
+        }).format(aNumber / 100);
     }
 
     function volumeCreditsFor(aPerformance) {
