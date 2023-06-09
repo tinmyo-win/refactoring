@@ -10,7 +10,6 @@ function printOwing(invoice) {
 }
 
 function recordDueDate(invoice) {
-    // record due date
     let Clock = {};
     Clock.today = new Date();
     const today = Clock.today;
