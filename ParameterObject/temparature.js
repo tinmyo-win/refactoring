@@ -14,17 +14,10 @@ const operatingPlan = {
     temperatureCeiling: 55,
 }
 
-function readingsOutsideRange(station, min, max, range) {
+function readingsOutsideRange(station, range) {
     return station.readings
-        .filter(r => r.temp < min || r.temp > max);
+        .filter(r => r.temp < range.min || r.temp > range.max);
 }
-
-let alerts = {};
-
-alerts = readingsOutsideRange(station,
-    operatingPlan.temperatureFloor,
-    operatingPlan.temperatureCeiling,
-    null);
 
 class NumberRange {
     constructor(min, max) {
@@ -33,5 +26,11 @@ class NumberRange {
     get min() { return this._data.min; }
     get max() { return this._data.max; }
 }
+
+const range = new NumberRange(operatingPlan.temperatureFloor, operatingPlan.temperatureCeiling);
+
+let alerts = {};
+
+alerts = readingsOutsideRange(station,range);
 
 console.log(alerts);
