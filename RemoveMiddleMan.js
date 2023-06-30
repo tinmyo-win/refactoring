@@ -5,8 +5,6 @@ class Person {
     get name() { return this._name; }
     get department() { return this._department; }
     set department(arg) { this._department = arg; }
-
-    get manager() { return this._department.manager }
 }
 
 class Department {
@@ -22,4 +20,4 @@ aDepartment.manager = "U Aung";
 
 aPerson.department = aDepartment;
 
-console.log("Mya Mya's manager " + aPerson.manager);
+console.log("Mya Mya's manager " + aPerson.department.manager);
